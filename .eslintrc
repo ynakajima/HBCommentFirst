@@ -1,0 +1,9 @@
+{
+  "env": {
+    "jest": true
+  },
+  "extends": ["standard", "standard-react"],
+  "globals": {
+    "fetch": true
+  }
+}

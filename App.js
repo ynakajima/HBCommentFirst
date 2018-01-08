@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import { fetchHotEntry } from './libs/HatenaBookmark'
 
 export default class App extends React.Component {
-  render() {
+  render () {
     return (
       <View style={{marginTop: 20}}>
         <BookmarkList fetchEntry={fetchHotEntry} />

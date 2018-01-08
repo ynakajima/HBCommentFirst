@@ -2,12 +2,13 @@
 
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import PropTypes from 'prop-types'
 
 export default class BookmarkListItem extends React.Component {
   render () {
     const item = this.props.item
     return (
-      <View style={styles.item}> 
+      <View style={styles.item}>
         <Text
           style={styles.itemTitle}
           numberOfLines={3}
@@ -26,6 +27,14 @@ export default class BookmarkListItem extends React.Component {
       </View>
     )
   }
+}
+
+BookmarkListItem.propTypes = {
+  item: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    bookmarkcount: PropTypes.object
+  }).isRequired
 }
 
 const styles = StyleSheet.create({

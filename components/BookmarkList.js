@@ -1,20 +1,27 @@
 // components/BookmarkList.js
 
 import React from 'react'
-import { Text, View, FlatList, RefreshControl } from 'react-native'
+import { FlatList, RefreshControl } from 'react-native'
 import BookmarkListItem from './BookmarkListItem'
+import PropTypes from 'prop-types'
 
 export default class BookmarkList extends React.Component {
-  state = {
-    refreshing: true,
-    items: []
+  constructor (props) {
+    super(props)
+    this.state = {
+      refreshing: true,
+      items: []
+    }
+
+    // bind
+    this._onRefresh = this._onRefresh.bind(this)
   }
 
   componentDidMount () {
     this._fetchFeed()
   }
 
-  _fetchFeed = async () => {
+  async _fetchFeed () {
     const feed = await this.props.fetchEntry()
     const items = feed.item
     console.log(items)
@@ -24,17 +31,21 @@ export default class BookmarkList extends React.Component {
     })
   }
 
-  _onRefresh = () => {
+  _onRefresh () {
     this.setState({ refreshing: true })
     this._fetchFeed()
   }
 
-  _keyExtractor = (item, index) => item.link
+  _keyExtractor (item, index) {
+    return item.link
+  }
 
-  _renderItem = ({ item }) => (
-    <BookmarkListItem item={item} />
-  )
-  
+  _renderItem ({ item }) {
+    return (
+      <BookmarkListItem item={item} />
+    )
+  }
+
   render () {
     return (
       <FlatList
@@ -45,10 +56,14 @@ export default class BookmarkList extends React.Component {
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh.bind(this)}
+            onRefresh={this._onRefresh}
           />
         }
       />
     )
   }
+}
+
+BookmarkList.propTypes = {
+  fetchEntry: PropTypes.func.isRequired
 }
