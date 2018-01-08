@@ -17,7 +17,7 @@ export default class BookmarkList extends React.Component {
   _fetchFeed = async () => {
     const feed = await this.props.fetchEntry()
     const items = feed.item
-    console.dir(items)
+    console.log(items)
     this.setState({
       refreshing: false,
       items
