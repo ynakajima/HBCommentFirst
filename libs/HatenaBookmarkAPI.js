@@ -32,6 +32,7 @@ export const fetchEntryWithStar = async (url) => {
   // はてなスターを取得
   const { eid } = entry
   const urlList = bookmarks
+    .filter(({ comment }) => comment !== '')
     .map(({ user, timestamp }) => {
       // http://b.hatena.ne.jp/{ユーザーID}/{コメントの日付(YYYYMMDD)}#bookmark-{エントリーID}
       const yyyymmdd = timestamp.split(' ')[0].replace(/\//g, '')

@@ -1,5 +1,7 @@
 {
   "expo": {
+    "name": "ブコメファースト",
+    "slug": "hb-comment-first", 
     "sdkVersion": "23.0.0"
   }
 }

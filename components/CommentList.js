@@ -27,23 +27,16 @@ export default class CommentList extends React.PureComponent {
 
   // ブックマークコメントを取得して state を更新
   async _fetchBookmarkComments () {
-    const startTime = new Date().getTime() / 1000
-    try {
-      // エントリー情報を取得
-      const { count, title, bookmarks } = await this.props.fetchEntry(this.props.url)
+    // エントリー情報を取得
+    const { count, title, bookmarks } = await this.props.fetchEntry(this.props.url)
 
-      // state を更新
-      this.setState({
-        refreshing: false,
-        bookmarks,
-        title,
-        count
-      })
-    } catch (e) {
-      console.warn(e)
-    }
-    const endTime = new Date().getTime() / 1000
-    console.warn(`time: ${endTime - startTime}`)
+    // state を更新
+    this.setState({
+      refreshing: false,
+      bookmarks,
+      title,
+      count
+    })
   }
 
   _onRefresh () {

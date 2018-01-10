@@ -1,21 +1,27 @@
+import promiseLimit from 'promise-limit'
+
+const connectionLimit = 5
+const limit = promiseLimit(connectionLimit)
 const entrypoint = 'http://s.hatena.com/entry.json'
 
 /**
  * はてなスター一覧取得
  */
 export const fetchStars = async (urlList) => {
-  let concat = []
+  let requests = []
   const sliceRange = 100
   for (let i = 0, l = urlList.length; i < l; i += sliceRange) {
-    let _urlList = urlList.slice(i, i + sliceRange)
-    let entries = await _fetchStars(_urlList)
-    if (entries.length > 0) {
-      concat = [...concat, ...entries]
-    }
+    requests.push(urlList.slice(i, i + sliceRange))
   }
-  console.log({concat})
-  return concat
+
+  let results = await Promise.all(requests.map(request => {
+    return limit(() => _fetchStars(request))
+  }))
+  results = results.reduce((prev, current) => [...prev, ...current])
+  console.log({results})
+  return results
 }
+
 const _fetchStars = async (urlList) => {
   const params = urlList
     .map(url => `uri=${encodeURIComponent(url)}`)

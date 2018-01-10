@@ -30,6 +30,7 @@
   "dependencies": {
     "eslint-config-standard-react": "^5.0.0",
     "expo": "^23.0.4",
+    "promise-limit": "^2.5.0",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
     "react-native": "0.50.3",
