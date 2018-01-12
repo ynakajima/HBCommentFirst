@@ -21,7 +21,9 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   app: {
-    marginTop: Platform.OS === 'ios' ? 20 : 24,
-    flex: 1
+    borderTopWidth: Platform.OS === 'ios' ? 20 : 24,
+    borderTopColor: '#795548',
+    flex: 1,
+    backgroundColor: '#fff'
   }
 })

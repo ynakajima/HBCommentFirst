@@ -4,7 +4,7 @@ const entrypoint = 'http://b.hatena.ne.jp/entry/jsonlite/'
 /**
  * ブックマークエントリー情報取得
  */
-export const fetchEntry = async (url) => {
+export const fetchBookmarkComments = async (url) => {
   const response = await fetch(`${entrypoint}?url=${encodeURI(url)}`)
   const entry = await response.json()
 
@@ -14,6 +14,7 @@ export const fetchEntry = async (url) => {
       bookmark.stars = []
       bookmark.coloredStars = []
       bookmark.starCount = 0
+      bookmark.unixtime = new Date(bookmark.timestamp).getTime() / 1000
       return bookmark
     })
   return entry
@@ -22,15 +23,9 @@ export const fetchEntry = async (url) => {
 /**
  * スター情報付きブックマークエントリー情報取得
  */
-export const fetchEntryWithStar = async (url) => {
-  // エントリー情報取得
-  const entry = await fetchEntry(url)
-
-  // ブックマークコメント取得
-  let bookmarks = entry.bookmarks
-
+export const fetchBookmarkCommentStars = async (entry) => {
   // はてなスターを取得
-  const { eid } = entry
+  let { eid, bookmarks } = entry
   const urlList = bookmarks
     .filter(({ comment }) => comment !== '')
     .map(({ user, timestamp }) => {
@@ -60,7 +55,7 @@ export const fetchEntryWithStar = async (url) => {
   })
 
   // スター数でソート
-  bookmarks.sort((a, b) => b.starCount - a.starCount)
+  // bookmarks.sort((a, b) => b.starCount - a.starCount)
 
   entry.bookmarks = bookmarks
   console.log(entry)

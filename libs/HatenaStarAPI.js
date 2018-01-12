@@ -62,3 +62,45 @@ const _fetchStars = async (urlList) => {
   })
   return entries
 }
+
+/**
+ * 渡されたブックマークエントリーにスター情報を付与して返却
+ */
+export const fetchBookmarkCommentStars = async (entry) => {
+  // はてなスターを取得
+  let { eid, bookmarks } = entry
+  const urlList = bookmarks
+    .filter(({ comment }) => comment !== '')
+    .map(({ user, timestamp }) => {
+      // http://b.hatena.ne.jp/{ユーザーID}/{コメントの日付(YYYYMMDD)}#bookmark-{エントリーID}
+      const yyyymmdd = timestamp.split(' ')[0].replace(/\//g, '')
+      return `http://b.hatena.ne.jp/${user}/${yyyymmdd}#bookmark-${eid}`
+    })
+  let starEntries = []
+  try {
+    starEntries = await fetchStars(urlList)
+  } catch (e) {
+    console.warn(e)
+  }
+
+  // スター情報を付与
+  const starIndex = {}
+  starEntries.map((starEntry, index) => {
+    const user = starEntry.uri.split('/')[3]
+    starIndex[user] = index
+  })
+  bookmarks = bookmarks.map(bookmark => {
+    if (typeof starIndex[bookmark.user] !== 'undefined') {
+      const { stars, coloredStars, starCount } = starEntries[starIndex[bookmark.user]]
+      return { ...bookmark, ...{ stars, coloredStars, starCount } }
+    }
+    return bookmark
+  })
+
+  // スター数でソート
+  // bookmarks.sort((a, b) => b.starCount - a.starCount)
+
+  entry.bookmarks = bookmarks
+  console.log(entry)
+  return entry
+}

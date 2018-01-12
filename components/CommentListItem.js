@@ -11,7 +11,7 @@ export default class CommentListItem extends React.PureComponent {
     // ユーザープロフィール画像URL
     const profileImage = `https://cdn1.www.st-hatena.com/users/${user.substr(0, 2)}/${user}/profile.gif`
     const star = stars.length ? `★${stars.length}` : ''
-    const tag = tags.length ? `[${tags.join(' ')}]` : ''
+    const tag = tags.length ? tags.map(tag => `#${tag}`).join(' ') : ''
 
     return (
       <View style={styles.item}>
@@ -19,15 +19,13 @@ export default class CommentListItem extends React.PureComponent {
           <Image source={{uri: profileImage}} style={styles.profileImage} />
         </View>
         <View style={styles.body}>
+          <Text style={styles.user}>{ user }</Text>
           <Text
             style={styles.comment}
           >
-            <Text style={styles.user}>{ user }</Text>
-            { ' ' }
             { comment }
-            { ' ' }
-            <Text style={styles.tags}>{ tag }</Text>
           </Text>
+          <Text style={styles.tags}>{ tag }</Text>
           <Text
             style={styles.timestamp}
           >
@@ -73,9 +71,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   comment: {
-    marginTop: -5,
     fontSize: 14,
-    lineHeight: 14 * 1.5
+    lineHeight: 14 * 1.6
   },
   timestamp: {
     marginTop: 5,
@@ -83,7 +80,9 @@ const styles = StyleSheet.create({
     color: '#666'
   },
   user: {
-    color: '#00a4de'
+    marginTop: -5,
+    color: '#795548',
+    fontWeight: 'bold'
   },
   star: {
     color: '#F7AD30'
